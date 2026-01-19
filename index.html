@@ -17,11 +17,20 @@
         .menu a:hover{background:rgba(255,255,255,0.08)}
         .hamburger{display:none;background:transparent;border:0;color:#fff;font-size:20px}
         main{padding:16px}
-        .card{background:#fff;border-radius:8px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+        .card{background:#fff;border-radius:8px;padding:18px;margin-bottom:16px;border:1px solid #eee;box-shadow:0 1px 0 rgba(0,0,0,0.03)}
         label{display:block;margin-bottom:6px;font-weight:600}
-        input[type=date],input[type=text],button{padding:8px;border:1px solid #ddd;border-radius:6px;width:100%;box-sizing:border-box}
+        /* inputs and selects: full width, simple clean style */
+        input[type=date],input[type=text],select{padding:10px;border:1px solid #e6e6e6;border-radius:6px;width:100%;box-sizing:border-box;background:#fff;font-size:15px}
+        /* buttons: compact, not forced to full width */
+        button{padding:8px 12px;border:0;border-radius:6px;box-sizing:border-box;width:auto;cursor:pointer;background:transparent;color:inherit}
         /* larger date input for readability on mobile */
         input[type=date]{font-size:16px;padding:10px}
+        .date-row{display:flex;gap:12px;align-items:center}
+        .icon-btn{background:var(--primary);color:#fff;border:0;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;justify-content:center;font-weight:700}
+        /* improve appearance of pills */
+        #booking-open-today, #booking-info, #est-result{box-shadow:0 1px 0 rgba(0,0,0,0.06)}
+        /* highlight text for booking description */
+        .highlight{background:#fff3cd;border-left:4px solid #ffcb05;padding:8px 12px;border-radius:6px}
         @media (max-width:700px){ input[type=date]{font-size:18px} }
 
         /* highlight the calculated booking date */
@@ -58,6 +67,8 @@
         .row{display:flex;gap:12px}
         .col{flex:1}
         .muted{color:#555;font-size:14px}
+        h2{font-size:20px;margin:0 0 10px 0}
+        h4{margin:0 0 8px 0}
         .tip{margin-bottom:8px}
         footer{padding:12px 16px;color:#555;font-size:13px;text-align:center}
 
@@ -94,7 +105,8 @@
 
                 booking_title: { en: '60 Days Advance Booking', hi: '60 दिनों की अग्रिम बुकिंग' },
                 most_used: { en: 'Most used', hi: 'सर्वाधिक उपयोग' },
-                booking_desc: { en: 'Indian Railways allows advance booking up to 60 days before journey. Today you can book for:', hi: 'भारतीय रेलवे यात्रा से 60 दिन पहले तक अग्रिम बुकिंग की अनुमति देता है। आप आज के लिए बुक कर सकते हैं:' },
+                booking_desc: { en: 'Indian Railways allows advance booking up to 60 days before journey.', hi: 'भारतीय रेलवे यात्रा से 60 दिन पहले तक अग्रिम बुकिंग की अनुमति देता है।' },
+                booking_desc_cta: { en: 'Today you can book for:', hi: 'आप आज के लिए बुक कर सकते हैं:' },
                 booking_select_label: { en: 'Select your journey date', hi: 'अपनी यात्रा की तारीख चुनें' },
                 set_earliest: {en: 'When booking will start', hi: 'बुकिंग कब शुरू होगी' },
                 booking_open_msg: { en: 'Booking is OPEN for journey on {journey} (opened on {open})', hi: 'यात्रा के लिए बुकिंग खुली है {journey} (खुली: {open})' },
@@ -249,10 +261,10 @@
             updateBookingInfoFor(dateInput.value);
             dateInput.addEventListener('change', function(e){ updateBookingInfoFor(e.target.value);});
 
-            // quick set to earliest bookable
-            var setEarliestBtn = document.getElementById('set-earliest');
-            if(setEarliestBtn){
-                setEarliestBtn.addEventListener('click', function(){ dateInput.value = iso; updateBookingInfoFor(iso); });
+            // wire calendar icon to set earliest
+            var setEarliestIcon = document.getElementById('set-earliest-icon');
+            if(setEarliestIcon){
+                setEarliestIcon.addEventListener('click', function(){ dateInput.value = iso; updateBookingInfoFor(iso); });
             }
 
             // simple PNR mock check (no backend)
@@ -270,44 +282,31 @@
             }
 
             // cancellation estimator
-            function estimateCharge(cls, timing){
+            function estimateCharge(cls){
                 // rough rules (INR)
                 var base = { '1A': 240, '2A': 200, '3A': 180, 'SL': 60 };
-                if(timing === 'after_chart') return null; // no refund / complex
-                if(timing === 'more48'){
-                    // smaller flat charge
-                    return Math.round(base[cls]);
-                }
-                if(timing === '24_48'){
-                    return Math.round(base[cls] * 1.0);
-                }
-                if(timing === 'less24'){
-                    return Math.round(base[cls] * 1.5);
-                }
-                return null;
+                return base[cls] || null;
             }
 
-            // attach estimator handler via event delegation (works even if element lookup fails earlier)
-            document.addEventListener('click', function(ev){
-                var tgt = ev.target || ev.srcElement;
-                if(!tgt) return;
-                if(tgt.id === 'est-run'){
-                    var clsEl = document.getElementById('est-class');
-                    var timingEl = document.getElementById('est-timing');
+            // trigger estimate when travel class changes
+            var estClassEl = document.getElementById('est-class');
+            if(estClassEl){
+                estClassEl.addEventListener('change', function(e){
+                    var cls = e.target.value;
                     var resEl = document.getElementById('est-result');
-                    if(!clsEl || !timingEl || !resEl) return;
-                    var cls = clsEl.value;
-                    var timing = timingEl.value;
                     var lang = (document.getElementById('lang') && document.getElementById('lang').value) || 'en';
-                    var amt = estimateCharge(cls, timing);
+                    var amt = estimateCharge(cls);
+                    if(!resEl) return;
                     if(amt === null){
                         resEl.textContent = translations.estimator_no_refund_msg[lang];
                     } else {
                         var tpl = translations.estimator_result_label[lang] || translations.estimator_result_label.en;
                         resEl.textContent = tpl.replace('{amt}', '₹' + amt);
                     }
-                }
-            });
+                });
+                // run once to show initial value
+                estClassEl.dispatchEvent(new Event('change'));
+            }
 
             
         });
@@ -347,21 +346,23 @@
     <main>
         <section id="home" class="card">
             <h2 style="margin-top:0" data-i18n="home_welcome">Welcome</h2>
-            <p class="muted" data-i18n="home_desc">Quick utilities and tips useful for Indian Railways passengers. Mobile-first and simple to use.</p>
+            <p class="muted" data-i18n="home_desc">Quick utilities and tips useful for Indian Railways passengers.</p>
         </section>
 
         <section id="booking" class="card">
             <h2 style="display:flex;align-items:center;gap:8px"><span data-i18n="booking_title">60 Days Advance Booking</span></h2>
-            <p class="muted" data-i18n="booking_desc">Indian Railways allows advance booking up to 60 days before journey. Today you can book for:</p>
+            <p class="muted" data-i18n="booking_desc">Indian Railways allows advance booking up to 60 days before journey. <span id="booking-cta" style="font-weight:800;color:var(--primary);">Today you can book for:</span></p>
+            <p class="muted"><span data-i18n="booking_desc"></span> <span id="booking-cta" data-i18n="booking_desc_cta" style="font-weight:800;color:var(--primary);"></span></p>
             <p style="font-size:18px;margin:6px 0 0 0"><strong id="booking-open-today">...</strong></p>
 
             <hr style="margin:12px 0">
 
             <label for="journey-date" data-i18n="booking_select_label">Select your journey date</label>
-            <input type="date" id="journey-date" aria-label="Journey date">
-            <div style="display:flex;gap:8px;margin-top:8px">
-                <button id="set-earliest" style="flex:1;background:var(--primary);color:#fff;border:none" data-i18n="set_earliest">Set to earliest bookable</button>
+            <div class="date-row">
+                <button id="set-earliest-icon" class="icon-btn" title="Set to earliest bookable" aria-label="Set to earliest bookable">60+</button>
+                <input type="date" id="journey-date" aria-label="Journey date" style="flex:1">
             </div>
+            <!-- calendar icon above used to set earliest date -->
             <p id="booking-info" class="muted" style="margin-top:10px"></p>
         </section>
 
@@ -387,9 +388,8 @@
                     <option value="3A" data-i18n="option_class_3A">3A (AC 3-tier)</option>
                     <option value="SL" data-i18n="option_class_SL">SL (Sleeper)</option>
                 </select>
-                <div style="display:flex;gap:8px;margin-top:8px">
-                    <button id="est-run" style="flex:1;background:var(--primary);color:#fff;border:none" data-i18n="estimator_button">Estimate</button>
-                </div>
+
+                <!-- Estimate button removed: calculation happens on class selection -->
                 <p id="est-result" class="muted" style="margin-top:8px"></p>
             </div>
 
@@ -407,4 +407,3 @@
     </footer>
 </body>
 </html>
-
