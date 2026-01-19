@@ -73,8 +73,11 @@
 
         /* Responsive */
         @media (max-width:700px){
-            .menu{display:none;flex-direction:column;background:#fff;position:absolute;left:16px;right:16px;top:64px;padding:8px;border-radius:8px;z-index:11;box-shadow:0 6px 18px rgba(0,0,0,0.12)}
-            .menu a{color:var(--primary)}
+            /* mobile menu: card style, scrollable if tall */
+            .menu{display:none;flex-direction:column;background:#fff;position:absolute;left:12px;right:12px;top:60px;padding:6px;border-radius:10px;z-index:110;box-shadow:0 10px 30px rgba(0,0,0,0.15);max-height:calc(100vh - 88px);overflow:auto}
+            /* make menu items full width and touch-friendly */
+            .menu a{color:var(--primary);display:block;padding:10px 14px;border-radius:6px;margin:4px 0;text-decoration:none;font-size:14px}
+            .menu a:hover, .menu a:focus{background:rgba(0,91,150,0.06)}
             .hamburger{display:inline-block}
         }
         /* booking CTA: ensure it's on its own line and styled like the original blue action */
@@ -87,15 +90,26 @@
             var menu = document.getElementById('mainMenu');
             if(btn && menu){
                 // toggle from hamburger only
+                btn.setAttribute('aria-expanded','false');
                 btn.addEventListener('click', function(e){
                     e.stopPropagation();
                     // toggle
-                    if(menu.style.display === 'flex') menu.style.display = '';
-                    else menu.style.display = 'flex';
+                    if(menu.style.display === 'flex'){
+                        menu.style.display = '';
+                        btn.setAttribute('aria-expanded','false');
+                    } else {
+                        menu.style.display = 'flex';
+                        btn.setAttribute('aria-expanded','true');
+                    }
                 });
 
                 // clicks inside menu shouldn't bubble to document
                 menu.addEventListener('click', function(e){ e.stopPropagation(); });
+
+                // close menu when a menu link is clicked
+                menu.querySelectorAll('a').forEach(function(link){
+                    link.addEventListener('click', function(){ menu.style.display = ''; btn.setAttribute('aria-expanded','false'); });
+                });
 
                 // clicking anywhere else on the page closes the menu
                 document.addEventListener('click', function(){ if(menu.style.display === 'flex') menu.style.display = ''; });
