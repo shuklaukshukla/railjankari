@@ -39,15 +39,14 @@
         /* highlighted box for booking info (red outline) - show as pill like the yellow badge above */
         #booking-info{
             display:inline-block;
-            box-sizing:border-box;
-            border:2px solid var(--primary); /* blue border */
-            background:#fff7f7;
-            padding:6px 10px; /* slightly smaller padding */
+            background:var(--accent);
+            color:#000;
+            padding:8px 12px;
             border-radius:20px;
-            color:#222;
             margin-top:10px;
             font-weight:700;
-            font-size:14px; /* smaller than the yellow pill (18px) */
+            font-size:16px;
+            box-sizing:border-box;
             width:auto;
         }
         /* style cancellation estimator result like booking-info pill */
@@ -74,7 +73,8 @@
 
         /* Responsive */
         @media (max-width:700px){
-            .menu{display:none;flex-direction:column;background:rgba(255,255,255,0.03);position:absolute;left:16px;right:16px;top:64px;padding:8px;border-radius:8px}
+            .menu{display:none;flex-direction:column;background:#fff;position:absolute;left:16px;right:16px;top:64px;padding:8px;border-radius:8px;z-index:11;box-shadow:0 6px 18px rgba(0,0,0,0.12)}
+            .menu a{color:var(--primary)}
             .hamburger{display:inline-block}
         }
         /* booking CTA: ensure it's on its own line and styled like the original blue action */
@@ -82,13 +82,24 @@
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function(){
-            // mobile menu toggle
+            // mobile menu toggle - ensure ONLY the hamburger toggles the menu
             var btn = document.getElementById('hamburger');
-            btn && btn.addEventListener('click', function(){
-                var menu = document.getElementById('mainMenu');
-                if(menu.style.display === 'flex') menu.style.display = '';
-                else menu.style.display = 'flex';
-            });
+            var menu = document.getElementById('mainMenu');
+            if(btn && menu){
+                // toggle from hamburger only
+                btn.addEventListener('click', function(e){
+                    e.stopPropagation();
+                    // toggle
+                    if(menu.style.display === 'flex') menu.style.display = '';
+                    else menu.style.display = 'flex';
+                });
+
+                // clicks inside menu shouldn't bubble to document
+                menu.addEventListener('click', function(e){ e.stopPropagation(); });
+
+                // clicking anywhere else on the page closes the menu
+                document.addEventListener('click', function(){ if(menu.style.display === 'flex') menu.style.display = ''; });
+            }
 
             // translations
             var translations = {
@@ -323,7 +334,6 @@
                 <button id="set-earliest-icon" class="icon-btn" title="Set to earliest bookable" aria-label="Set to earliest bookable">60+</button>
                 <input type="date" id="journey-date" aria-label="Journey date" style="flex:1">
             </div>
-            <!-- calendar icon above used to set earliest date -->
             <p id="booking-info" class="muted" style="margin-top:10px"></p>
         </section>
 
