@@ -27,8 +27,34 @@
         /* highlight the calculated booking date */
         #booking-open-today{display:inline-block;background:var(--accent);color:#000;padding:8px 12px;border-radius:20px;font-weight:700;font-size:18px}
         .badge{display:inline-block;background:var(--primary);color:#fff;padding:4px 8px;border-radius:12px;font-size:12px;margin-left:8px}
-        /* highlighted box for booking info (red outline) */
-        #booking-info{display:block;width:100%;box-sizing:border-box;border:2px solid #d9534f;background:#fff7f7;padding:10px 12px;border-radius:6px;color:#222;margin-top:10px;font-weight:600}
+        /* highlighted box for booking info (red outline) - show as pill like the yellow badge above */
+        #booking-info{
+            display:inline-block;
+            box-sizing:border-box;
+            border:2px solid var(--primary); /* blue border */
+            background:#fff7f7;
+            padding:6px 10px; /* slightly smaller padding */
+            border-radius:20px;
+            color:#222;
+            margin-top:10px;
+            font-weight:700;
+            font-size:14px; /* smaller than the yellow pill (18px) */
+            width:auto;
+        }
+        /* style cancellation estimator result like booking-info pill */
+        #est-result{
+            display:inline-block;
+            box-sizing:border-box;
+            border:2px solid var(--primary);
+            background:#fff7f7;
+            padding:6px 10px;
+            border-radius:20px;
+            color:#222;
+            margin-top:10px;
+            font-weight:700;
+            font-size:14px;
+            width:auto;
+        }
         .row{display:flex;gap:12px}
         .col{flex:1}
         .muted{color:#555;font-size:14px}
@@ -113,7 +139,7 @@
                 estimator_class_label: { en: 'Select travel class', hi: 'यात्री कक्षा चुनें' },
                 estimator_timing_label: { en: 'Select cancellation timing', hi: 'रद्द करने का समय चुनें' },
                 estimator_button: { en: 'Estimate', hi: 'अनुमानित करें' },
-                estimator_result_label: { en: 'Approximate charge: {amt} per passenger', hi: 'अनुमानित शुल्क: प्रति यात्री {amt}' },
+                estimator_result_label: { en: 'Charge: {amt} per passenger', hi: 'शुल्क: प्रति यात्री {amt}' },
                 estimator_no_refund_msg: { en: 'After charting: Very limited or no refund in many cases.', hi: 'चार्ट बनने के बाद: कई मामलों में रिफंड सीमित या नहीं के बराबर होता है।' },
                 option_class_1A: { en: '1A (First AC)', hi: '1A (फर्स्ट AC)' },
                 option_class_2A: { en: '2A (AC 2-tier)', hi: '2A (AC 2-टियर)' },
@@ -246,11 +272,11 @@
             // cancellation estimator
             function estimateCharge(cls, timing){
                 // rough rules (INR)
-                var base = { '1A': 400, '2A': 300, '3A': 250, 'SL': 100 };
+                var base = { '1A': 240, '2A': 200, '3A': 180, 'SL': 60 };
                 if(timing === 'after_chart') return null; // no refund / complex
                 if(timing === 'more48'){
                     // smaller flat charge
-                    return Math.round(base[cls] * 0.5);
+                    return Math.round(base[cls]);
                 }
                 if(timing === '24_48'){
                     return Math.round(base[cls] * 1.0);
@@ -311,10 +337,7 @@
             <div id="mainMenu" class="menu">
                 <a href="#home" data-i18n="menu_home">Home</a>
                 <a href="#booking" data-i18n="menu_booking">Booking Open Date</a>
-                <!--<a href="#pnr" data-i18n="menu_pnr">PNR Status</a>-->
                 <a href="#tatkal" data-i18n="menu_tatkal">Tatkal Tips</a>
-                <a href="#packing" data-i18n="menu_packing">Packing Tips</a>
-                <a href="#food" data-i18n="menu_food">Food & Cleanliness</a>
                 <a href="#cancellation" data-i18n="menu_cancellation">Cancellation</a>
                 <a href="#contact" data-i18n="menu_contact">Contact</a>
             </div>
@@ -351,40 +374,12 @@
             <div class="tip" data-i18n="tatkal_tip3">Auto-fill: Use browser auto-fill for passenger names and ID numbers, but verify fields before payment.</div>
         </section>
 
-        <section id="packing" class="card">
-            <h2 data-i18n="packing_title">Packing & Journey Tips</h2>
-            <div class="tip" data-i18n="packing_tip1">Carry a small locked bag for valuables and a light blanket for overnight journeys.</div>
-            <div class="tip" data-i18n="packing_tip2">Keep digital and printed copies of tickets, ID proofs, and emergency contacts.</div>
-            <div class="tip" data-i18n="packing_tip3">For long journeys, pack basic medicines, sanitizer, and a power bank for phone charging.</div>
-        </section>
-
-        <section id="food" class="card">
-            <h2 data-i18n="food_title">Food & Cleanliness</h2>
-            <div class="tip" data-i18n="food_tip1">Prefer packaged food or order from verified e-catering partners using your PNR.</div>
-            <div class="tip" data-i18n="food_tip2">Carry wet wipes and a small trash bag to keep your berth/seat tidy.</div>
-        </section>
-
         <section id="cancellation" class="card">
             <h2 data-i18n="cancellation_title">Ticket Cancellation & Refunds</h2>
-            <p class="muted" data-i18n="cancellation_overview">Overview: This section gives general guidance for cancelling tickets and checking refunds. For definitive rules and amounts, always refer to the official IRCTC policy or contact railway enquiry.</p>
-
-            <div class="tip" data-i18n="cancellation_etickets">E-tickets: E-tickets can usually be cancelled online via the IRCTC website/app until chart preparation. Refunds are processed to the original payment method; timing varies by bank/payment provider.</div>
-            <div class="tip" data-i18n="cancellation_counter">Counter (PRS) tickets: Cancel at the reservation counter (PRS) before the train departs. Bring the original ticket and ID proof used during booking.</div>
-            <div class="tip" data-i18n="cancellation_waitlist">Waitlisted tickets: If a ticket remains waitlisted after charting, it is typically auto-cancelled and refund initiated — manual cancellation is not required for such cases.</div>
-            <div class="tip" data-i18n="cancellation_tatkal">Tatkal bookings: Tatkal tickets have strict cancellation rules and are usually non-refundable except in exceptional cases (e.g., train cancellation). Confirm details on official sources before cancelling.</div>
-            <div class="tip" data-i18n="cancellation_partial">Partial/Group cancellations: You can cancel one or more passengers from a ticket; refunds are calculated only for cancelled passengers after applicable charges.</div>
-
-            <h3 style="margin-top:10px" data-i18n="cancellation_charges_title">Typical cancellation charges (approx.)</h3>
-            <ul class="muted" style="padding-left:18px;margin:6px 0">
-                <li data-i18n="cancellation_charge_1">Before chart preparation: E-tickets can be cancelled online; refunds are given after deducting applicable cancellation/clerkage charges. Amounts vary by class and timing — check IRCTC for exact figures.</li>
-                <li data-i18n="cancellation_charge_2">After chart preparation: Cancellation rules differ — often confirmed tickets have limited or no refund after charting; waitlisted tickets are usually auto-cancelled with full refund.</li>
-                <li data-i18n="cancellation_charge_3">Tatkal tickets: Generally non-refundable except when train is cancelled. Verify official policy before attempting cancellation.</li>
-                <li data-i18n="cancellation_charge_4">Partial cancellations: Charges are applied per passenger and depend on class and timing of cancellation.</li>
-                <li data-i18n="cancellation_charge_5">Train cancellation by railways: Full refund is normally issued to passengers.</li>
-            </ul>
+            
 
             <div class="card" style="margin-top:10px">
-                <h4 data-i18n="estimator_title">Estimate cancellation charge</h4>
+                
                 <label for="est-class" data-i18n="estimator_class_label">Select travel class</label>
                 <select id="est-class" style="margin-bottom:8px">
                     <option value="1A" data-i18n="option_class_1A">1A (First AC)</option>
@@ -407,14 +402,7 @@
                 <p id="est-result" class="muted" style="margin-top:8px"></p>
             </div>
 
-            <h3 style="margin-top:10px" data-i18n="cancellation_checklist_title">Quick checklist before cancelling</h3>
-            <ul class="muted" style="padding-left:18px;margin:6px 0">
-                <li data-i18n="checklist_li1">Have your PNR/ticket number handy.</li>
-                <li data-i18n="checklist_li2">Know whether it is an e-ticket or counter ticket.</li>
-                <li data-i18n="checklist_li3">Keep original ID proof ready (for counter refunds).</li>
-                <li data-i18n="checklist_li4">Check whether booking was confirmed, RAC, or waitlisted — refund rules differ.</li>
-                <li data-i18n="checklist_li5">For exact cancellation charges and timelines, consult IRCTC or station enquiry.</li>
-            </ul>
+         
         </section>
 
         <section id="contact" class="card">
