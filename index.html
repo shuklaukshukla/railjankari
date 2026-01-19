@@ -77,6 +77,8 @@
             .menu{display:none;flex-direction:column;background:rgba(255,255,255,0.03);position:absolute;left:16px;right:16px;top:64px;padding:8px;border-radius:8px}
             .hamburger{display:inline-block}
         }
+        /* booking CTA: ensure it's on its own line and styled like the original blue action */
+        #booking-cta{display:block;font-weight:800;color:var(--primary);margin-top:6px}
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function(){
@@ -93,81 +95,39 @@
                 brand_title: { en: 'Rail Jankari', hi: 'रेल जानकारी' },
                 menu_home: { en: 'Home', hi: 'होम' },
                 menu_booking: { en: '60 Days Advance Booking', hi: '60 दिनों की अग्रिम बुकिंग' },
-                menu_pnr: { en: 'PNR Status', hi: 'PNR स्थिति' },
                 menu_tatkal: { en: 'Tatkal Tips', hi: 'तत्काल सलाह' },
-                menu_packing: { en: 'Packing Tips', hi: 'पैकिंग सुझाव' },
-                menu_food: { en: 'Food & Cleanliness', hi: 'खाना एवं स्वच्छता' },
                 menu_cancellation: { en: 'Cancellation', hi: 'कैंसलेशन' },
                 menu_contact: { en: 'Contact', hi: 'संपर्क' },
 
-                home_welcome: { en: 'Welcome', hi: 'स्वागत है' },
-                home_desc: { en: 'Quick utilities and tips useful for Indian Railways passengers. Mobile-first and simple to use.', hi: 'भारतीय रेलवे यात्रियों के लिए उपयोगी त्वरित उपकरण और सुझाव। मोबाइल-फ्रेंडली और उपयोग में सरल।' },
+                home_welcome: { en: 'Your Welcome ', hi: 'आपका स्वागत है' },
+                home_desc: { en: 'Quick utilities and tips useful for Indian Railways passengers.', hi: 'भारतीय रेलवे यात्रियों के लिए उपयोगी त्वरित उपकरण और सुझाव।' },
 
                 booking_title: { en: '60 Days Advance Booking', hi: '60 दिनों की अग्रिम बुकिंग' },
-                most_used: { en: 'Most used', hi: 'सर्वाधिक उपयोग' },
                 booking_desc: { en: 'Indian Railways allows advance booking up to 60 days before journey.', hi: 'भारतीय रेलवे यात्रा से 60 दिन पहले तक अग्रिम बुकिंग की अनुमति देता है।' },
-                booking_desc_cta: { en: 'Today you can book for:', hi: 'आप आज के लिए बुक कर सकते हैं:' },
+                booking_desc_cta: { en: 'Today you can book for the date:', hi: 'आज आप इस तारीख के लिए बुकिंग कर सकते हैं।' },
                 booking_select_label: { en: 'Select your journey date', hi: 'अपनी यात्रा की तारीख चुनें' },
-                set_earliest: {en: 'When booking will start', hi: 'बुकिंग कब शुरू होगी' },
-                booking_open_msg: { en: 'Booking is OPEN for journey on {journey} (opened on {open})', hi: 'यात्रा के लिए बुकिंग खुली है {journey} (खुली: {open})' },
+                
+                booking_open_msg: { en: 'Booking is OPEN for journey on {journey}', hi: 'यात्रा के लिए बुकिंग खुली है {journey}' },
                 booking_will_start_msg: { en: 'Booking will start on {open} ({diff} day(s) from today)', hi: 'बुकिंग शुरू होगी {open} (आज से {diff} दिन)' },
 
-                pnr_title: { en: 'PNR Status (demo)', hi: 'PNR स्थिति (डेमो)' },
-                pnr_label: { en: 'Enter PNR (10 digits)', hi: 'PNR दर्ज करें (10 अंक)' },
-                pnr_placeholder: { en: 'e.g. 1234567890', hi: 'उदा. 1234567890' },
-                pnr_check: { en: 'Check', hi: 'जांचें' },
-                pnr_enter_msg: { en: 'Enter a 10-digit PNR to check.', hi: 'जांचने के लिए 10 अंकों का PNR दर्ज करें।' },
-                pnr_digits_msg: { en: 'PNR should be 10 digits.', hi: 'PNR 10 अंकों का होना चाहिए।' },
-                pnr_demo_msg: { en: 'This is a demo page — for real PNR status use official IRCTC or railway enquiry.', hi: 'यह एक डेमो पृष्ठ है — वास्तविक PNR स्थिति के लिए आधिकारिक IRCTC या रेलवे पूछताछ का उपयोग करें।' },
+                
 
                 tatkal_title: { en: 'Tatkal & Booking Tips', hi: 'तत्काल और बुकिंग संबंधी सुझाव' },
                 tatkal_tip1: { en: 'Timings: Tatkal opens at 10:00 AM for AC and 11:00 AM for non-AC trains on the day before travel — be prepared a few minutes earlier.', hi: 'समय: तत्काल AC के लिए सुबह 10:00 और नॉन-AC के लिए 11:00 बजे खुलता है — कुछ मिनट पहले तैयार रहें।' },
                 tatkal_tip2: { en: 'Multiple devices: Use multiple devices/browsers and keep passenger details ready to speed up booking.', hi: 'कई डिवाइस: बुकिंग प्रक्रिया को तेज़ करने के लिए कई डिवाइस/ब्राउज़र का उपयोग करें और यात्रियों की जानकारी तैयार रखें।' },
                 tatkal_tip3: { en: 'Auto-fill: Use browser auto-fill for passenger names and ID numbers, but verify fields before payment.', hi: 'ऑटो-फिल: यात्री नाम और ID नंबर के लिए ब्राउज़र ऑटो-फिल का उपयोग करें, पर भुगतान से पहले जाँच करें।' },
 
-                packing_title: { en: 'Packing & Journey Tips', hi: 'पैकिंग और यात्रा सुझाव' },
-                packing_tip1: { en: 'Carry a small locked bag for valuables and a light blanket for overnight journeys.', hi: 'कीमती सामान के लिए एक छोटा ताला हुआ बैग और रात भर की यात्राओं के लिए हल्का कंबल साथ रखें।' },
-                packing_tip2: { en: 'Keep digital and printed copies of tickets, ID proofs, and emergency contacts.', hi: 'टिकट, ID प्रमाण और आपातकालीन संपर्कों की डिजिटल और मुद्रित प्रतियाँ रखें।' },
-                packing_tip3: { en: 'For long journeys, pack basic medicines, sanitizer, and a power bank for phone charging.', hi: 'लंबी यात्राओं के लिए मूल दवाइयां, सेनिटाइजर और फोन चार्जिंग के लिए पावर बैंक पैक करें।' },
-
-                food_title: { en: 'Food & Cleanliness', hi: 'खाना एवं स्वच्छता' },
-                food_tip1: { en: 'Prefer packaged food or order from verified e-catering partners using your PNR.', hi: 'पैकेज्ड भोजन को प्राथमिकता दें या अपने PNR का उपयोग कर सत्यापित ई-कैटरिंग पार्टनर से ऑर्डर करें।' },
-                food_tip2: { en: 'Carry wet wipes and a small trash bag to keep your berth/seat tidy.', hi: 'अपनी बर्थ/सीट को साफ रखने के लिए वेट वाइप्स और एक छोटा कचरा बैग साथ रखें।' },
-
+                
                 cancellation_title: { en: 'Ticket Cancellation & Refunds', hi: 'टिकट कैंसलेशन और रिफंड' },
-                cancellation_overview: { en: 'Overview: This section gives general guidance for cancelling tickets and checking refunds. For definitive rules and amounts, always refer to the official IRCTC policy or contact railway enquiry.', hi: 'सारांश: यह अनुभाग टिकट रद्द करने और रिफंड की जांच के लिए सामान्य मार्गदर्शन देता है। निश्चित नियमों और राशियों के लिए हमेशा आधिकारिक IRCTC नीति देखें या रेलवे पूछताछ से संपर्क करें।' },
-                cancellation_etickets: { en: 'E-tickets: E-tickets can usually be cancelled online via the IRCTC website/app until chart preparation. Refunds are processed to the original payment method; timing varies by bank/payment provider.', hi: 'ई-टिकट: ई-टिकट सामान्यतः चार्ट बनने तक IRCTC वेबसाइट/ऐप के माध्यम से ऑनलाइन रद्द की जा सकती हैं। रिफंड मूल भुगतान विधि में किया जाता है; समय बैंक/भुगतान प्रदाता के अनुसार भिन्न होता है।' },
-                cancellation_counter: { en: 'Counter (PRS) tickets: Cancel at the reservation counter (PRS) before the train departs. Bring the original ticket and ID proof used during booking.', hi: 'काउंटर (PRS) टिकट: ट्रेन प्रस्थान से पहले आरक्षण काउंटर (PRS) पर रद्द करें। बुकिंग के दौरान उपयोग किए गए मूल टिकट और ID प्रूफ साथ लेकर जाएं।' },
-                cancellation_waitlist: { en: 'Waitlisted tickets: If a ticket remains waitlisted after charting, it is typically auto-cancelled and refund initiated — manual cancellation is not required for such cases.', hi: 'वेटलिस्ट टिकट: यदि चार्ट बनने के बाद टिकट वेटलिस्टेड रहती है, तो आमतौर पर यह स्वतः रद्द हो जाती है और रिफंड शुरू होता है — ऐसे मामलों में मैन्युअल रद्द करना आवश्यक नहीं है।' },
-                cancellation_tatkal: { en: 'Tatkal bookings: Tatkal tickets have strict cancellation rules and are usually non-refundable except in exceptional cases (e.g., train cancellation). Confirm details on official sources before cancelling.', hi: 'टैटकाल बुकिंग: टैटकाल टिकटों के रद्द करने के कठोर नियम होते हैं और सामान्यतः अपवादों को छोड़कर रिफंड नहीं होते (जैसे ट्रेन कैंसल)। रद्द करने से पहले आधिकारिक स्रोतों पर विवरण की पुष्टि करें।' },
-                cancellation_partial: { en: 'Partial/Group cancellations: You can cancel one or more passengers from a ticket; refunds are calculated only for cancelled passengers after applicable charges.', hi: 'आंशिक/समूह रद्द: आप टिकट से एक या अधिक यात्रियों को रद्द कर सकते हैं; लागू शुल्कों के बाद केवल रद्द किए गए यात्रियों के लिए रिफंड की गणना की जाती है।' },
-                cancellation_charges_title: { en: 'Typical cancellation charges (approx.)', hi: 'आम तौर पर लागू होने वाले रद्दीकरण शुल्क (अनुमान)' },
-                cancellation_charge_1: { en: 'Before chart preparation: E-tickets can be cancelled online; refunds are given after deducting applicable cancellation/clerkage charges. Amounts vary by class and timing — check IRCTC for exact figures.', hi: 'चार्ट बनने से पहले: ई-टिकट ऑनलाइन रद्द की जा सकती हैं; लागू रद्दीकरण/क्लर्क फीस घटाने के बाद रिफंड दिया जाता है। राशि वर्ग और समय के अनुसार भिन्न होती है — सटीक जानकारी के लिए IRCTC देखें।' },
-                cancellation_charge_2: { en: 'After chart preparation: Cancellation rules differ — often confirmed tickets have limited or no refund after charting; waitlisted tickets are usually auto-cancelled with full refund.', hi: 'चार्ट बनने के बाद: रद्द करने के नियम अलग होते हैं — अक्सर कन्फर्म टिकटों पर चार्ट बनाने के बाद रिफंड सीमित या नहीं के बराबर होता है; वेटलिस्ट टिकट सामान्यतः स्वतः रद्द होकर पूरा रिफंड मिलता है।' },
-                cancellation_charge_3: { en: 'Tatkal tickets: Generally non-refundable except when train is cancelled. Verify official policy before attempting cancellation.', hi: 'टैटकाल टिकट: आमतौर पर रिफंड नहीं होते हैं सिवाय ट्रेन के रद्द होने के मामले के। रद्द करने से पहले आधिकारिक नीति सत्यापित करें।' },
-                cancellation_charge_4: { en: 'Partial cancellations: Charges are applied per passenger and depend on class and timing of cancellation.', hi: 'आंशिक रद्द: शुल्क प्रति यात्री लागू होते हैं और रद्द करने के समय तथा कक्षा पर निर्भर करते हैं।' },
-                cancellation_charge_5: { en: 'Train cancellation by railways: Full refund is normally issued to passengers.', hi: 'रेल द्वारा ट्रेन के रद्द होने पर: सामान्यतः यात्रियों को पूरा रिफंड दिया जाता है।' },
-                estimator_title: { en: 'Estimate cancellation charge', hi: 'कैंसलेशन शुल्क अनुमानित करें' },
-                estimator_class_label: { en: 'Select travel class', hi: 'यात्री कक्षा चुनें' },
-                estimator_timing_label: { en: 'Select cancellation timing', hi: 'रद्द करने का समय चुनें' },
-                estimator_button: { en: 'Estimate', hi: 'अनुमानित करें' },
+                estimator_class_label: { en: 'Select travel class', hi: 'यात्रा श्रेणी चुनें' },
+                
                 estimator_result_label: { en: 'Charge: {amt} per passenger', hi: 'शुल्क: प्रति यात्री {amt}' },
                 estimator_no_refund_msg: { en: 'After charting: Very limited or no refund in many cases.', hi: 'चार्ट बनने के बाद: कई मामलों में रिफंड सीमित या नहीं के बराबर होता है।' },
                 option_class_1A: { en: '1A (First AC)', hi: '1A (फर्स्ट AC)' },
                 option_class_2A: { en: '2A (AC 2-tier)', hi: '2A (AC 2-टियर)' },
                 option_class_3A: { en: '3A (AC 3-tier)', hi: '3A (AC 3-टियर)' },
                 option_class_SL: { en: 'SL (Sleeper)', hi: 'SL (स्लीपर)' },
-                timing_more48: { en: 'More than 48 hours before departure', hi: 'रवाना होने से 48 घंटे से अधिक पहले' },
-                timing_24_48: { en: '24–48 hours before departure', hi: 'रवाना होने से 24–48 घंटे पहले' },
-                timing_less24: { en: 'Less than 24 hours before departure (before chart)', hi: 'रवाना होने से 24 घंटे से कम पहले (चार्ट से पहले)' },
-                timing_after_chart: { en: 'After chart preparation', hi: 'चार्ट बनने के बाद' },
-                cancellation_checklist_title: { en: 'Quick checklist before cancelling', hi: 'रद्द करने से पहले त्वरित चेकलिस्ट' },
-                checklist_li1: { en: 'Have your PNR/ticket number handy.', hi: 'अपना PNR/टिकट नंबर साथ रखें।' },
-                checklist_li2: { en: 'Know whether it is an e-ticket or counter ticket.', hi: 'जानें कि यह ई-टिकट है या काउंटर टिकट।' },
-                checklist_li3: { en: 'Keep original ID proof ready (for counter refunds).', hi: 'मूल ID प्रूफ तैयार रखें (काउंटर रिफंड के लिए)।' },
-                checklist_li4: { en: 'Check whether booking was confirmed, RAC, or waitlisted — refund rules differ.', hi: 'जांचें कि बुकिंग कन्फर्म थी, RAC थी, या वेटलिस्ट — रिफंड नियम अलग होते हैं।' },
-                checklist_li5: { en: 'For exact cancellation charges and timelines, consult IRCTC or station enquiry.', hi: 'सटीक कैंसलेशन शुल्क और समय सीमा के लिए IRCTC या स्टेशन पूछताछ से परामर्श करें।' },
-
+                
                 contact_title: { en: 'Contact & Resources', hi: 'संपर्क और संसाधन' },
                 contact_resources: { en: 'Official IRCTC website and National Train Enquiry System (NTES) provide live train status and booking. For emergencies call railway helplines available at stations.', hi: 'आधिकारिक IRCTC वेबसाइट और नेशनल ट्रेन एनक्वायरी सिस्टम (NTES) लाइव ट्रेन स्थिति और बुकिंग प्रदान करते हैं। आपात स्थितियों के लिए स्टेशनों पर उपलब्ध रेलवे हेल्पलाइन को कॉल करें।' },
 
@@ -351,9 +311,10 @@
 
         <section id="booking" class="card">
             <h2 style="display:flex;align-items:center;gap:8px"><span data-i18n="booking_title">60 Days Advance Booking</span></h2>
-            <p class="muted" data-i18n="booking_desc">Indian Railways allows advance booking up to 60 days before journey. <span id="booking-cta" style="font-weight:800;color:var(--primary);">Today you can book for:</span></p>
-            <p class="muted"><span data-i18n="booking_desc"></span> <span id="booking-cta" data-i18n="booking_desc_cta" style="font-weight:800;color:var(--primary);"></span></p>
-            <p style="font-size:18px;margin:6px 0 0 0"><strong id="booking-open-today">...</strong></p>
+            
+            <p class="muted"><span data-i18n="booking_desc"></span></p>
+            <p id="booking-cta" data-i18n="booking_desc_cta"></p>
+            <p style="font-size:18px;margin:6px 0 0 0"><br/><strong id="booking-open-today">...</strong></p>
 
             <hr style="margin:12px 0">
 
