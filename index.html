@@ -6,85 +6,281 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Rail Jankari</title>
     <style>
-        :root{ --primary:#005b96; --accent:#ffcb05; --bg:#f7f7f7; }
-        body{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:var(--bg);margin:0;color:#222}
-        header{background:linear-gradient(90deg,var(--primary),#0077b6);color:#fff;padding:12px 16px;position:sticky;top:0;z-index:10}
-        .brand{display:flex;align-items:center;gap:12px}
-        .brand h1{font-size:18px;margin:0}
-        nav{display:flex;align-items:center;gap:12px;margin-top:8px}
-        .menu{display:flex;gap:12px}
-        .menu a{color:#fff;text-decoration:none;padding:8px 10px;border-radius:6px;font-size:14px}
-        .menu a:hover{background:rgba(255,255,255,0.08)}
-        .hamburger{display:none;background:transparent;border:0;color:#fff;font-size:20px}
-        main{padding:16px}
-        .card{background:#fff;border-radius:8px;padding:18px;margin-bottom:16px;border:1px solid #eee;box-shadow:0 1px 0 rgba(0,0,0,0.03)}
-        label{display:block;margin-bottom:6px;font-weight:600}
+        :root {
+            --primary: #005b96;
+            --accent: #ffcb05;
+            --bg: #f7f7f7;
+        }
+
+        body {
+            font-family: system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;
+            background: var(--bg);
+            margin: 0;
+            color: #222
+        }
+
+        header {
+            background: linear-gradient(90deg,var(--primary),#0077b6);
+            color: #fff;
+            padding: 12px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 10
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+            .brand h1 {
+                font-size: 18px;
+                margin: 0
+            }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px
+        }
+
+        .menu {
+            display: flex;
+            gap: 12px
+        }
+
+            .menu a {
+                color: #fff;
+                text-decoration: none;
+                padding: 8px 10px;
+                border-radius: 6px;
+                font-size: 14px
+            }
+
+                .menu a:hover {
+                    background: rgba(255,255,255,0.08)
+                }
+
+        .hamburger {
+            display: none;
+            background: transparent;
+            border: 0;
+            color: #fff;
+            font-size: 20px
+        }
+
+        main {
+            padding: 16px
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 16px;
+            border: 1px solid #eee;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.03)
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600
+        }
         /* inputs and selects: full width, simple clean style */
-        input[type=date],input[type=text],select{padding:10px;border:1px solid #e6e6e6;border-radius:6px;width:100%;box-sizing:border-box;background:#fff;font-size:15px}
+        input[type=date], input[type=text], select {
+            padding: 10px;
+            border: 1px solid #e6e6e6;
+            border-radius: 6px;
+            width: 100%;
+            box-sizing: border-box;
+            background: #fff;
+            font-size: 15px
+        }
         /* buttons: compact, not forced to full width */
-        button{padding:8px 12px;border:0;border-radius:6px;box-sizing:border-box;width:auto;cursor:pointer;background:transparent;color:inherit}
+        button {
+            padding: 8px 12px;
+            border: 0;
+            border-radius: 6px;
+            box-sizing: border-box;
+            width: auto;
+            cursor: pointer;
+            background: transparent;
+            color: inherit
+        }
         /* larger date input for readability on mobile */
-        input[type=date]{font-size:16px;padding:10px}
-        .date-row{display:flex;gap:12px;align-items:center}
-        .icon-btn{background:var(--primary);color:#fff;border:0;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;justify-content:center;font-weight:700}
+        input[type=date] {
+            font-size: 16px;
+            padding: 10px
+        }
+
+        .date-row {
+            display: flex;
+            gap: 12px;
+            align-items: center
+        }
+
+        .icon-btn {
+            background: var(--primary);
+            color: #fff;
+            border: 0;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700
+        }
         /* improve appearance of pills */
-        #booking-open-today, #booking-info, #est-result{box-shadow:0 1px 0 rgba(0,0,0,0.06)}
+        #booking-open-today, #booking-info, #est-result {
+            box-shadow: 0 1px 0 rgba(0,0,0,0.06)
+        }
         /* highlight text for booking description */
-        .highlight{background:#fff3cd;border-left:4px solid #ffcb05;padding:8px 12px;border-radius:6px}
-        @media (max-width:700px){ input[type=date]{font-size:18px} }
+        .highlight {
+            background: #fff3cd;
+            border-left: 4px solid #ffcb05;
+            padding: 8px 12px;
+            border-radius: 6px
+        }
+
+        @media (max-width:700px) {
+            input[type=date] {
+                font-size: 18px
+            }
+        }
 
         /* highlight the calculated booking date */
-        #booking-open-today{display:inline-block;background:var(--accent);color:#000;padding:8px 12px;border-radius:20px;font-weight:700;font-size:18px}
-        .badge{display:inline-block;background:var(--primary);color:#fff;padding:4px 8px;border-radius:12px;font-size:12px;margin-left:8px}
+        #booking-open-today {
+            display: inline-block;
+            background: var(--accent);
+            color: #000;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 18px
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 8px
+        }
         /* highlighted box for booking info (red outline) - show as pill like the yellow badge above */
-        #booking-info{
-            display:inline-block;
-            background:var(--accent);
-            color:#000;
-            padding:8px 12px;
-            border-radius:20px;
-            margin-top:10px;
-            font-weight:700;
-            font-size:16px;
-            box-sizing:border-box;
-            width:auto;
+        #booking-info {
+            display: inline-block;
+            background: var(--accent);
+            color: #000;
+            padding: 8px 12px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            box-sizing: border-box;
+            width: auto;
         }
         /* style cancellation estimator result like booking-info pill */
-        #est-result{
-            display:inline-block;
-            box-sizing:border-box;
-            border:2px solid var(--primary);
-            background:#fff7f7;
-            padding:6px 10px;
-            border-radius:20px;
-            color:#222;
-            margin-top:10px;
-            font-weight:700;
-            font-size:14px;
-            width:auto;
+        #est-result {
+            display: inline-block;
+            box-sizing: border-box;
+            border: 2px solid var(--primary);
+            background: #fff7f7;
+            padding: 6px 10px;
+            border-radius: 20px;
+            color: #222;
+            margin-top: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            width: auto;
         }
-        .row{display:flex;gap:12px}
-        .col{flex:1}
-        .muted{color:#555;font-size:14px}
-        h2{font-size:20px;margin:0 0 10px 0}
-        h4{margin:0 0 8px 0}
-        .tip{margin-bottom:8px}
-        footer{padding:12px 16px;color:#555;font-size:13px;text-align:center}
+
+        .row {
+            display: flex;
+            gap: 12px
+        }
+
+        .col {
+            flex: 1
+        }
+
+        .muted {
+            color: #555;
+            font-size: 14px
+        }
+
+        h2 {
+            font-size: 20px;
+            margin: 0 0 10px 0
+        }
+
+        h4 {
+            margin: 0 0 8px 0
+        }
+
+        .tip {
+            margin-bottom: 8px
+        }
+
+        footer {
+            padding: 12px 16px;
+            color: #555;
+            font-size: 13px;
+            text-align: center
+        }
 
         /* Responsive */
-        @media (max-width:700px){
+        @media (max-width:700px) {
             /* mobile menu: card style, scrollable if tall */
-            .menu{display:none;flex-direction:column;background:#fff;position:absolute;left:12px;right:12px;top:60px;padding:6px;border-radius:10px;z-index:110;box-shadow:0 10px 30px rgba(0,0,0,0.15);max-height:calc(100vh - 88px);overflow:auto}
-            /* make menu items full width and touch-friendly */
-            .menu a{color:var(--primary);display:block;padding:10px 14px;border-radius:6px;margin:4px 0;text-decoration:none;font-size:14px}
-            .menu a:hover, .menu a:focus{background:rgba(0,91,150,0.06)}
-            .hamburger{display:inline-block}
+            .menu {
+                display: none;
+                flex-direction: column;
+                background: #fff;
+                position: absolute;
+                left: 12px;
+                right: 12px;
+                top: 60px;
+                padding: 6px;
+                border-radius: 10px;
+                z-index: 110;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+                max-height: calc(100vh - 88px);
+                overflow: auto
+            }
+                /* make menu items full width and touch-friendly */
+                .menu a {
+                    color: var(--primary);
+                    display: block;
+                    padding: 10px 14px;
+                    border-radius: 6px;
+                    margin: 4px 0;
+                    text-decoration: none;
+                    font-size: 14px
+                }
+
+                    .menu a:hover, .menu a:focus {
+                        background: rgba(0,91,150,0.06)
+                    }
+
+            .hamburger {
+                display: inline-block
+            }
         }
         /* booking CTA: ensure it's on its own line and styled like the original blue action */
-        #booking-cta{display:block;font-weight:800;color:var(--primary);margin-top:6px}
+        #booking-cta {
+            display: block;
+            font-weight: 800;
+            color: var(--primary);
+            margin-top: 6px
+        }
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function(){
+    <script>document.addEventListener('DOMContentLoaded', function(){
             // mobile menu toggle - ensure ONLY the hamburger toggles the menu
             var btn = document.getElementById('hamburger');
             var menu = document.getElementById('mainMenu');
@@ -131,28 +327,28 @@
                 booking_desc: { en: 'Indian Railways allows advance booking up to 60 days before journey.', hi: 'भारतीय रेलवे यात्रा से 60 दिन पहले तक अग्रिम बुकिंग की अनुमति देता है।' },
                 booking_desc_cta: { en: 'Today you can book for the date:', hi: 'आज आप इस तारीख के लिए बुकिंग कर सकते हैं।' },
                 booking_select_label: { en: 'Select your journey date', hi: 'अपनी यात्रा की तारीख चुनें' },
-                
+
                 booking_open_msg: { en: 'Booking is OPEN for journey on {journey}', hi: 'यात्रा के लिए बुकिंग खुली है {journey}' },
                 booking_will_start_msg: { en: 'Booking will start on {open} ({diff} day(s) from today)', hi: 'बुकिंग शुरू होगी {open} (आज से {diff} दिन)' },
 
-                
+
 
                 tatkal_title: { en: 'Tatkal & Booking Tips', hi: 'तत्काल और बुकिंग संबंधी सुझाव' },
                 tatkal_tip1: { en: 'Timings: Tatkal opens at 10:00 AM for AC and 11:00 AM for non-AC trains on the day before travel — be prepared a few minutes earlier.', hi: 'समय: तत्काल AC के लिए सुबह 10:00 और नॉन-AC के लिए 11:00 बजे खुलता है — कुछ मिनट पहले तैयार रहें।' },
                 tatkal_tip2: { en: 'Multiple devices: Use multiple devices/browsers and keep passenger details ready to speed up booking.', hi: 'कई डिवाइस: बुकिंग प्रक्रिया को तेज़ करने के लिए कई डिवाइस/ब्राउज़र का उपयोग करें और यात्रियों की जानकारी तैयार रखें।' },
                 tatkal_tip3: { en: 'Auto-fill: Use browser auto-fill for passenger names and ID numbers, but verify fields before payment.', hi: 'ऑटो-फिल: यात्री नाम और ID नंबर के लिए ब्राउज़र ऑटो-फिल का उपयोग करें, पर भुगतान से पहले जाँच करें।' },
 
-                
+
                 cancellation_title: { en: 'Ticket Cancellation & Refunds', hi: 'टिकट कैंसलेशन और रिफंड' },
                 estimator_class_label: { en: 'Select travel class', hi: 'यात्रा श्रेणी चुनें' },
-                
+
                 estimator_result_label: { en: 'Charge: {amt} per passenger', hi: 'शुल्क: प्रति यात्री {amt}' },
                 estimator_no_refund_msg: { en: 'After charting: Very limited or no refund in many cases.', hi: 'चार्ट बनने के बाद: कई मामलों में रिफंड सीमित या नहीं के बराबर होता है।' },
                 option_class_1A: { en: '1A (First AC)', hi: '1A (फर्स्ट AC)' },
                 option_class_2A: { en: '2A (AC 2-tier)', hi: '2A (AC 2-टियर)' },
                 option_class_3A: { en: '3A (AC 3-tier)', hi: '3A (AC 3-टियर)' },
                 option_class_SL: { en: 'SL (Sleeper)', hi: 'SL (स्लीपर)' },
-                
+
                 contact_title: { en: 'Contact & Resources', hi: 'संपर्क और संसाधन' },
                 contact_resources: { en: 'Official IRCTC website and National Train Enquiry System (NTES) provide live train status and booking. For emergencies call railway helplines available at stations.', hi: 'आधिकारिक IRCTC वेबसाइट और नेशनल ट्रेन एनक्वायरी सिस्टम (NTES) लाइव ट्रेन स्थिति और बुकिंग प्रदान करते हैं। आपात स्थितियों के लिए स्टेशनों पर उपलब्ध रेलवे हेल्पलाइन को कॉल करें।' },
 
@@ -164,6 +360,15 @@
             function fmt(d){
                 try{
                     return new Date(d).toLocaleDateString(currentLocale,{day:'2-digit',month:'short',year:'numeric'});
+                }catch(e){return d}
+            }
+
+            // return full weekday + existing short date (e.g. "Thursday 16 Apr 2026")
+            function fmtWithWeekday(d){
+                try{
+                    var dt = new Date(d);
+                    var weekday = dt.toLocaleDateString(currentLocale, { weekday: 'long' });
+                    return weekday + ' ' + fmt(dt);
                 }catch(e){return d}
             }
 
@@ -207,6 +412,8 @@
 
             function updateBookingOpenToday(){
                 document.getElementById('booking-open-today').textContent = fmt(bookOpenToday);
+                // show full weekday + date in the yellow pill
+                document.getElementById('booking-open-today').textContent = fmtWithWeekday(bookOpenToday);
             }
             updateBookingOpenToday();
 
@@ -293,18 +500,17 @@
                 estClassEl.dispatchEvent(new Event('change'));
             }
 
-            
-        });
-    </script>
+
+        });</script>
 </head>
 <body>
     <header>
         <div style="display:flex;justify-content:space-between;align-items:center">
             <div class="brand">
                 <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <rect width="24" height="24" rx="4" fill="#fff" opacity="0.08"/>
-                    <path d="M4 12h16" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M4 7h16" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <rect width="24" height="24" rx="4" fill="#fff" opacity="0.08" />
+                    <path d="M4 12h16" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M4 7h16" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 <h1 data-i18n="brand_title">Rail Jankari</h1>
             </div>
@@ -336,10 +542,10 @@
 
         <section id="booking" class="card">
             <h2 style="display:flex;align-items:center;gap:8px"><span data-i18n="booking_title">60 Days Advance Booking</span></h2>
-            
+
             <p class="muted"><span data-i18n="booking_desc"></span></p>
             <p id="booking-cta" data-i18n="booking_desc_cta"></p>
-            <p style="font-size:18px;margin:6px 0 0 0"><br/><strong id="booking-open-today">...</strong></p>
+            <p style="font-size:18px;margin:6px 0 0 0"><br /><strong id="booking-open-today">...</strong></p>
 
             <hr style="margin:12px 0">
 
@@ -351,7 +557,7 @@
             <p id="booking-info" class="muted" style="margin-top:10px"></p>
         </section>
 
-      
+
 
         <section id="tatkal" class="card">
             <h2 data-i18n="tatkal_title">Tatkal & Booking Tips</h2>
@@ -362,10 +568,10 @@
 
         <section id="cancellation" class="card">
             <h2 data-i18n="cancellation_title">Ticket Cancellation & Refunds</h2>
-            
+
 
             <div class="card" style="margin-top:10px">
-                
+
                 <label for="est-class" data-i18n="estimator_class_label">Select travel class</label>
                 <select id="est-class" style="margin-bottom:8px">
                     <option value="1A" data-i18n="option_class_1A">1A (First AC)</option>
@@ -378,7 +584,7 @@
                 <p id="est-result" class="muted" style="margin-top:8px"></p>
             </div>
 
-         
+
         </section>
 
         <section id="contact" class="card">
@@ -392,3 +598,4 @@
     </footer>
 </body>
 </html>
+
